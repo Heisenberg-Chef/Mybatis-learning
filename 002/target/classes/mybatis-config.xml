@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="db.properties">
+    <!--引入外部配置文件-->
+<!--        <property name="username" value="root"/>-->
+<!--        <property name="password" value="213451235"/>-->
+    </properties>
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+<!--        把下划线命名转化为驼峰命名的映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.ray.pojo.student" alias="student"></typeAlias>
+        <typeAlias type="com.ray.pojo.teacher" alias="teacher"></typeAlias>
+    </typeAliases>
+    <environments default="database1">
+        <environment id="database1">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="com/ray/dao/UserMapper.xml"/>
+        <!--绑定接口-->
+        <mapper class="com.ray.dao.UserMapperAnnotation"></mapper>
+        <mapper resource="com/ray/dao/studentMapper.xml"></mapper>
+        <mapper resource="com/ray/dao/teacherMapper.xml"></mapper>
+        <mapper class="com.ray.dao.BlogMapper"></mapper>
+    </mappers>
+
+</configuration>

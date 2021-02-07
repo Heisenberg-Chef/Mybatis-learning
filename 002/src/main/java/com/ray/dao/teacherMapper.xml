@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace=绑定一个对应的Dao/Mapper接口 -->
+<mapper namespace="com.ray.dao.teacherMapper">
+    <select id="getTeacher" resultMap="teachervsstudent">
+        SELECT t.id,t.name,s.id,s.name,s.tid
+        FROM teacher t,student s
+        where t.id=s.tid and t.id=#{tid}
+    </select>
+    <resultMap id="teachervsstudent" type="teacher">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+<!--        使用集合关系-->
+<!--        在集合中的泛型,使用ofType来取值.-->
+        <collection property="studentList" ofType="student">
+            <result column="id" property="id"></result>
+            <result property="name" column="name"></result>
+            <result property="tid" column="tid"></result>
+        </collection>
+    </resultMap>
+    
+    
+<!--    +++++++++++++++++++++++++++++++++++++++++++++++-->
+    
+    
+    
+    <select id="getTeacher2" resultMap="tvs">
+        SELECT * FROM mybatis.teacher where id=#{tid}
+    </select>
+    <resultMap id="tvs" type="teacher">
+        <collection property="studentList" javaType="ArrayList" ofType="student"></collection>
+    </resultMap>
+    <select id="getstudent2" resultType="student">
+        SELECT * FROM mybatis.student where tid=#{tid}
+    </select>
+    
+</mapper>

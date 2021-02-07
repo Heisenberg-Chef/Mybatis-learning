@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ray.dao.BlogMapper">
+    <insert id="addBlog" parameterType="com.ray.pojo.Blog" >
+        insert into mybatis.blog(id,title,author,create_time,views)
+        value (#{id},#{title},#{author},#{createTime},#{views})
+    </insert>
+
+
+<!--    <select id="queryBlogIF" parameterType="map" resultType="com.ray.pojo.Blog">-->
+<!--        select * from blog where 1=1-->
+<!--        <if test="title != null">-->
+<!--            and title=#{title}-->
+<!--        </if>-->
+<!--        <if test="author != null">-->
+<!--            and author != null-->
+<!--        </if>-->
+<!--    </select>-->
+
+<!--    <select id="queryBlogIF" parameterType="map" resultType="com.ray.pojo.Blog">-->
+<!--        select * from blog-->
+<!--        <where>-->
+<!--            <if test="title != null">-->
+<!--                and title=#{title}-->
+<!--            </if>-->
+<!--            <if test="author != null">-->
+<!--                and author != null-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    
+    <sql id="abc">
+        <where>
+            <choose>
+                <when test="title != null">
+                    title=#{title}
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </where>
+    </sql>
+    <select id="queryBlogIF" parameterType="map" resultType="com.ray.pojo.Blog">
+        SELECT * FROM blog
+        <include refid="abc"></include>
+    </select>
+
+<cache >
+
+</cache>
+</mapper>

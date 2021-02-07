@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace=绑定一个对应的Dao/Mapper接口 -->
+<mapper namespace="com.ray.dao.studentMapper">
+<!--    ===============================子查询方式-->
+    <select id="getstudent" resultMap="studentteacher">
+        SELECT * FROM student -- left join teacher on student.tid=teacher.id
+    </select>
+    <resultMap id="studentteacher" type="com.ray.pojo.student">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+<!--        负责属性,我们需要单独处理-->
+<!--        对象使用association,集合使用Collection-->
+<!--        查询所有学生信息,根据查询出来的学生tid,寻找对应的老师-->
+        <association property="teacher" column="tid" javaType="teacher" select="getteacher"></association>
+    </resultMap>
+    <select id="getteacher" parameterType="_int" resultType="teacher">
+        SELECT * from teacher where id=#{id}
+    </select>
+
+
+<!--   ===========================================================================方法2-->
+<!--    思路:
+            1. 查询所有学生信息-->
+<!--        2. 根据查询的学生tid,寻找老师-->
+
+    <select id="getstudent2" resultMap="studentteacher2">
+        select s.id sid,s.name sname,t.name tname,t.id tid
+        from student s,teacher t
+        where s.tid  = t.id
+    </select>
+    <resultMap id="studentteacher2" type="student">
+        <result property="id" column="sid"></result>
+        <result property="name" column="sname"></result>
+        <association property="teacher" javaType="teacher">
+            <result property="id" column="tid"></result>
+            <result property="name" column="tname"></result>
+        </association>
+    </resultMap>
+</mapper>
